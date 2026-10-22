@@ -38,6 +38,7 @@ public final class BundledCableEntity extends BlockEntity implements IInWorldGri
         final int[] sideChannels = new int[6];
         final int[] visualChannels = new int[6];
         boolean powered;
+        appeng.integration.modules.igtooltip.GridNodeState state = appeng.integration.modules.igtooltip.GridNodeState.OFFLINE;
         Lane(CableSpec spec, int slot) { this.spec=spec; this.capacity=spec.type().isDense()?32:8; Arrays.fill(targets,slot); }
     }
     private final Lane[] lanes = new Lane[LIMIT];
@@ -253,6 +254,9 @@ public final class BundledCableEntity extends BlockEntity implements IInWorldGri
                 }
             }
             boolean power=node!=null&&node.isPowered();
+            var state=appeng.integration.modules.igtooltip.GridNodeState.fromNode(node);
+            update|=lane.state!=state;
+            lane.state=state;
             update|=lane.connected!=connected||lane.external!=ext||lane.channels!=used||lane.powered!=power||lane.capacity!=capacity;
             lane.connected=connected;lane.external=ext;lane.channels=used;lane.powered=power;
             lane.capacity=capacity;
@@ -296,6 +300,9 @@ public final class BundledCableEntity extends BlockEntity implements IInWorldGri
         return valid(slot)&&lanes[slot]!=null?(side==null?lanes[slot].channels:lanes[slot].sideChannels[side.ordinal()]):0;
     }
     public int capacity(int slot) { return valid(slot)&&lanes[slot]!=null?lanes[slot].capacity:0; }
+    public Component nodeState(int slot) {
+        return (valid(slot)&&lanes[slot]!=null?lanes[slot].state:appeng.integration.modules.igtooltip.GridNodeState.OFFLINE).textComponent();
+    }
     private CompoundTag laneTag(int i,boolean network) {
         var lane=lanes[i];var tag=new CompoundTag();
         tag.putInt("slot",i);tag.put("item",lane.spec.item().save(new CompoundTag()));
@@ -304,6 +311,7 @@ public final class BundledCableEntity extends BlockEntity implements IInWorldGri
         if(network) {
             tag.putInt("connected",lane.connected);tag.putInt("external",lane.external);tag.putInt("channels",lane.channels);tag.putBoolean("powered",lane.powered);
             tag.putInt("capacity",lane.capacity);tag.putIntArray("sideChannels",lane.sideChannels);tag.putIntArray("visualChannels",lane.visualChannels);
+            tag.putString("state",lane.state.name());
         } else {
             if(lane.managed!=null) { lane.savedNode=new CompoundTag();lane.managed.saveToNBT(lane.savedNode); }
             tag.put("nodeData",lane.savedNode.copy());
@@ -335,6 +343,8 @@ public final class BundledCableEntity extends BlockEntity implements IInWorldGri
             if(network){lane.connected=cable.getInt("connected")&63;lane.external=cable.getInt("external")&63;lane.channels=Math.max(0,cable.getInt("channels"));lane.powered=cable.getBoolean("powered");}
             if(network) {
                 if(cable.contains("capacity"))lane.capacity=Math.max(0,cable.getInt("capacity"));
+                for(var state:appeng.integration.modules.igtooltip.GridNodeState.values())
+                    if(state.name().equals(cable.getString("state")))lane.state=state;
                 int[] used=cable.getIntArray("sideChannels"),visual=cable.getIntArray("visualChannels");
                 for(int side=0;side<6;side++) {
                     lane.sideChannels[side]=side<used.length?Math.max(0,used[side]):0;

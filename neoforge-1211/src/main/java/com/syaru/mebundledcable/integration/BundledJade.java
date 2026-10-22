@@ -2,6 +2,8 @@ package com.syaru.mebundledcable.integration;
 
 import com.syaru.mebundledcable.*;
 import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
+import appeng.core.localization.InGameTooltip;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import snownee.jade.api.*;
@@ -27,9 +29,12 @@ public final class BundledJade implements IWailaPlugin {
             if(!(accessor.getBlockEntity() instanceof BundledCableEntity cable))return;
             var hit=target(accessor,cable);
             if(hit==null)return;
-            tooltip.add(cable.status(hit.slot()));
-            if(hit.side()!=null)tooltip.add(Component.translatable("message.mebundledcable.face_channels",
-                    Component.translatable("message.mebundledcable.side."+hit.side().getSerializedName()),cable.channels(hit.slot(),hit.side())));
+            tooltip.remove(JadeIds.CORE_OBJECT_NAME);
+            tooltip.add(0,cable.spec(hit.slot()).item().getHoverName().copy().withStyle(ChatFormatting.WHITE),JadeIds.CORE_OBJECT_NAME);
+            int used=cable.channels(hit.slot(),hit.side()),max=cable.capacity(hit.slot());
+            tooltip.add(max<=0||max==Integer.MAX_VALUE?InGameTooltip.Channels.text(used):InGameTooltip.ChannelsOf.text(used,max));
+            tooltip.add(cable.nodeState(hit.slot()));
+            if(accessor.getPlayer().isShiftKeyDown())tooltip.add(Component.literal("#"+(hit.slot()+1)).withStyle(ChatFormatting.GRAY));
         }
         @Override public IElement getIcon(BlockAccessor accessor,IPluginConfig config,IElement current) {
             if(!(accessor.getBlockEntity() instanceof BundledCableEntity cable))return current;
