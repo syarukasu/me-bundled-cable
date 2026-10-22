@@ -1,0 +1,27 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="LGPL-3.0-only; AE2 textures: CC-BY-NC-SA-3.0; Ender IO assets: Unlicense"
+[[mods]]
+modId="mebundledcable"
+version="${version}"
+displayName="ME Bundled Cable"
+authors="syarukasu"
+description='''Eight independent AE2 cables in one block, with conduit-style placement and wrench controls.'''
+[[dependencies.mebundledcable]]
+modId="forge"
+mandatory=true
+versionRange="[47.4.18,)"
+ordering="NONE"
+side="BOTH"
+[[dependencies.mebundledcable]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.20.1,1.20.2)"
+ordering="NONE"
+side="BOTH"
+[[dependencies.mebundledcable]]
+modId="ae2"
+mandatory=true
+versionRange="[15.4.10,)"
+ordering="AFTER"
+side="BOTH"

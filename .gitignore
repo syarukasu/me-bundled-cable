@@ -1,0 +1,9 @@
+**/.gradle/
+**/build/
+**/run/
+**/local/
+**/dist/
+*.log
+*.hprof
+*.jar
+!**/gradle/wrapper/gradle-wrapper.jar

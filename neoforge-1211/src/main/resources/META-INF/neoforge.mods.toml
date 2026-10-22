@@ -1,0 +1,29 @@
+modLoader="javafml"
+loaderVersion="[4,)"
+license="LGPL-3.0-only"
+[[mixins]]
+config="mebundledcable.mixins.json"
+[[mods]]
+modId="mebundledcable"
+version="${version}"
+displayName="ME Bundled Cable"
+authors="syarukasu"
+description='''Eight independent AE2 cables in one block.'''
+[[dependencies.mebundledcable]]
+modId="neoforge"
+type="required"
+versionRange="[21.1.247,)"
+ordering="NONE"
+side="BOTH"
+[[dependencies.mebundledcable]]
+modId="minecraft"
+type="required"
+versionRange="[1.21.1,1.21.2)"
+ordering="NONE"
+side="BOTH"
+[[dependencies.mebundledcable]]
+modId="ae2"
+type="required"
+versionRange="[19.2.18,)"
+ordering="AFTER"
+side="BOTH"

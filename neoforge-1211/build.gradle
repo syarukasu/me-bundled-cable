@@ -1,0 +1,34 @@
+plugins { id 'java-library'; id 'net.neoforged.moddev' version '2.0.143' }
+group = 'com.syaru.mebundledcable'
+version = '0.1.0-alpha.4'
+base { archivesName = 'me-bundled-cable-neoforge-1.21.1' }
+java { toolchain.languageVersion = JavaLanguageVersion.of(21); withSourcesJar() }
+repositories {
+    mavenCentral()
+    maven { url = 'https://modmaven.dev' }
+    maven { url = 'https://api.modrinth.com/maven'; content { includeGroup 'maven.modrinth' } }
+}
+neoForge {
+    version = '21.1.247'
+    mods { mebundledcable { sourceSet sourceSets.main } }
+    runs {
+        client { client(); gameDirectory=file('run'); jvmArgument '-Xmx2G' }
+        server { server(); gameDirectory=file('build/server'); programArgument '--nogui' }
+    }
+}
+dependencies {
+    implementation('org.appliedenergistics:appliedenergistics2:19.2.18') { transitive=false }
+    runtimeOnly('org.appliedenergistics:guideme:21.1.17') { transitive=false }
+    compileOnly 'maven.modrinth:jade:yd8FKCmx'
+}
+tasks.named('processResources') {
+    inputs.property 'version',project.version
+    filesMatching('META-INF/neoforge.mods.toml') { expand version:project.version }
+}
+tasks.named('jar') {
+    from('LICENSE','NOTICE.md')
+    from('licenses') { into 'licenses' }
+    preserveFileTimestamps=false
+    reproducibleFileOrder=true
+}
+tasks.withType(JavaCompile).configureEach { options.encoding='UTF-8' }

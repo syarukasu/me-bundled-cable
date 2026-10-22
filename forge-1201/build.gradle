@@ -1,0 +1,42 @@
+plugins { id 'net.minecraftforge.gradle' version '6.0.54' }
+group = 'com.syaru.mebundledcable'
+version = '0.1.0-alpha.4'
+base { archivesName = 'me-bundled-cable-forge-1.20.1' }
+java { toolchain.languageVersion = JavaLanguageVersion.of(17); withSourcesJar() }
+repositories {
+    mavenCentral()
+    maven { url = 'https://modmaven.dev' }
+    maven { url = 'https://api.modrinth.com/maven'; content { includeGroup 'maven.modrinth' } }
+}
+minecraft {
+    mappings channel: 'official', version: '1.20.1'
+    runs {
+        configureEach {
+            workingDirectory project.file('run')
+            jvmArgs '-Xmx2G'
+            args '-mixin.config=mebundledcable.mixins.json'
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', project.file('build/createSrgToMcp/output.srg').absolutePath
+            mods { mebundledcable { source sourceSets.main } }
+        }
+        client {}
+        server { args '--nogui' }
+    }
+}
+dependencies {
+    minecraft 'net.minecraftforge:forge:1.20.1-47.4.18'
+    implementation fg.deobf('appeng:appliedenergistics2-forge:15.4.10')
+    runtimeOnly fg.deobf('org.appliedenergistics:guideme:20.1.7')
+    compileOnly fg.deobf('maven.modrinth:jade:xJQHCmWJ')
+}
+tasks.named('processResources') {
+    inputs.property 'version', project.version
+    filesMatching('META-INF/mods.toml') { expand version: project.version }
+}
+tasks.named('jar') {
+    finalizedBy 'reobfJar'
+    manifest { attributes 'MixinConfigs':'mebundledcable.mixins.json' }
+    from('LICENSE','NOTICE.md')
+    from('licenses') { into 'licenses' }
+}
+tasks.withType(JavaCompile).configureEach { options.encoding='UTF-8' }

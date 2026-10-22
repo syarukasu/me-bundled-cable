@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shapeless","ingredients":[{"type":"neoforge:components","components":{"minecraft:custom_data":{"cable":"ae2:cyan_glass_cable"}},"items":"mebundledcable:cable","strict":true}],"result":{"id":"ae2:cyan_glass_cable","count":1}}

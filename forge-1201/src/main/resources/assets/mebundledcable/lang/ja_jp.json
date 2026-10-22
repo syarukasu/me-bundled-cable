@@ -1,0 +1,19 @@
+{
+  "block.mebundledcable.controller":"MEバンドルコントローラー",
+  "message.mebundledcable.unlimited":"無制限",
+  "message.mebundledcable.selected":"回線 #%s を選択",
+  "message.mebundledcable.face_channels":"%s側: %s ch",
+  "message.mebundledcable.side.down":"下",
+  "message.mebundledcable.side.up":"上",
+  "message.mebundledcable.side.north":"北",
+  "message.mebundledcable.side.south":"南",
+  "message.mebundledcable.side.west":"西",
+  "message.mebundledcable.side.east":"東",
+  "config.jade.plugin_mebundledcable.channels":"回線とチャンネル",
+  "itemGroup.mebundledcable":"ME Bundled Cable",
+  "block.mebundledcable.cable":"ME複合ケーブル",
+  "item.mebundledcable.cable.typed":"複合配線用 %s",
+  "message.mebundledcable.full":"収納できるケーブルは8本までです。",
+  "message.mebundledcable.status":"#%s  %s  %s / %s ch",
+  "message.mebundledcable.mapped":"回線 #%s と回線 #%s を接続しました"
+}

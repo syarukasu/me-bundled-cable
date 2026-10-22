@@ -1,0 +1,19 @@
+{
+  "block.mebundledcable.controller":"ME Bundled Controller",
+  "message.mebundledcable.unlimited":"Unlimited",
+  "message.mebundledcable.selected":"Selected lane #%s",
+  "message.mebundledcable.face_channels":"%s: %s ch",
+  "message.mebundledcable.side.down":"Down",
+  "message.mebundledcable.side.up":"Up",
+  "message.mebundledcable.side.north":"North",
+  "message.mebundledcable.side.south":"South",
+  "message.mebundledcable.side.west":"West",
+  "message.mebundledcable.side.east":"East",
+  "config.jade.plugin_mebundledcable.channels":"Lanes and channels",
+  "itemGroup.mebundledcable":"ME Bundled Cable",
+  "block.mebundledcable.cable":"ME Bundled Cable",
+  "item.mebundledcable.cable.typed":"Bundled %s",
+  "message.mebundledcable.full":"This bundle already contains eight cables.",
+  "message.mebundledcable.status":"#%s  %s  %s / %s ch",
+  "message.mebundledcable.mapped":"Connected lane #%s to lane #%s"
+}

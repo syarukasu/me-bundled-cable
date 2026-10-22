@@ -1,0 +1,8 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.syaru.mebundledcable.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": ["ControllerShapeMixin"],
+  "injectors": {"defaultRequire": 1}
+}
