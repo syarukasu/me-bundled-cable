@@ -80,6 +80,11 @@ public final class BundledModel implements IDynamicBakedModel {
                 else upstreamPart(out,part,lane.type().isDense(),rgb,alpha);
             }
         }
+        if(snapshot.editing()>=0)for(var lane:snapshot.lanes())if(lane.slot()==snapshot.editing())
+            for(var handle:ConduitGeometry.handles(lane.slot())) {
+                boolean connected=(lane.connected()&(1<<handle.side().ordinal()))!=0;
+                box(ghost,handle.box(),connected?0x70ef8b:0xffbc55,150,sprite(),true);
+            }
         if(snapshot.selected()<0)for(var facade:snapshot.facades())facade(solid,facade);
         return new Mesh(List.copyOf(solid),List.copyOf(ghost));
     }

@@ -22,7 +22,8 @@ public final class BundledJade implements IWailaPlugin {
         @Override public ResourceLocation getUid() { return new ResourceLocation("mebundledcable","channels"); }
         private ConduitGeometry.Hit target(BlockAccessor accessor,BundledCableEntity cable) {
             var origin=Vec3.atLowerCornerOf(accessor.getPosition());
-            return ConduitGeometry.hit(cable.pieces(),accessor.getPlayer().getEyePosition().subtract(origin),
+            int selected=accessor.getPlayer().isShiftKeyDown()?-1:BundledCableBlock.selectedSlot(accessor.getPlayer(),cable);
+            return ConduitGeometry.hit(cable.interactionPieces(selected),accessor.getPlayer().getEyePosition().subtract(origin),
                     accessor.getHitResult().getLocation().subtract(origin));
         }
         @Override public void appendTooltip(ITooltip tooltip,BlockAccessor accessor,IPluginConfig config) {

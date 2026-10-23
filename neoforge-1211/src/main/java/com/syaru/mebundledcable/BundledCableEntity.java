@@ -25,7 +25,7 @@ public final class BundledCableEntity extends BlockEntity implements IInWorldGri
     public static final ModelProperty<RenderSnapshot> RENDER = new ModelProperty<>();
     public record RenderLane(int slot, AECableType type, appeng.api.util.AEColor color, int channels, boolean powered, int connected, int external, List<Integer> targets, List<Integer> visualChannels) { }
     public record RenderFacade(Direction side, BlockState state) { }
-    public record RenderSnapshot(List<RenderLane> lanes, List<RenderFacade> facades, int selected) { }
+    public record RenderSnapshot(List<RenderLane> lanes, List<RenderFacade> facades, int selected, int editing) { }
     private static final class Lane {
         final CableSpec spec;
         final int[] targets = new int[6];
@@ -47,10 +47,11 @@ public final class BundledCableEntity extends BlockEntity implements IInWorldGri
     private final ItemStack[] facades = new ItemStack[6];
     private boolean initialized, queued, destroying;
     private int selected = -1;
+    private int editing = -1;
     private int controllerFaces;
     private List<ConduitGeometry.Piece> pieces = List.of();
     private VoxelShape shape = Shapes.empty();
-    private RenderSnapshot snapshot = new RenderSnapshot(List.of(),List.of(),-1);
+    private RenderSnapshot snapshot = new RenderSnapshot(List.of(),List.of(),-1,-1);
     private static final IGridNodeListener<BundledCableEntity> LISTENER = new IGridNodeListener<>() {
         @Override public void onSaveChanges(BundledCableEntity owner,IGridNode node) { owner.setChanged(); }
         @Override public void onStateChanged(BundledCableEntity owner,IGridNode node,State state) { owner.schedule(); }
@@ -65,6 +66,12 @@ public final class BundledCableEntity extends BlockEntity implements IInWorldGri
     public CableSpec spec(int slot) { return valid(slot)&&lanes[slot]!=null?lanes[slot].spec:null; }
     public IGridNode node(int slot) { return valid(slot)&&lanes[slot]!=null&&lanes[slot].managed!=null?lanes[slot].managed.getNode():null; }
     public List<ConduitGeometry.Piece> pieces() { return pieces; }
+    public List<ConduitGeometry.Piece> interactionPieces(int slot) {
+        if(spec(slot)==null)return pieces;
+        var result=new ArrayList<>(ConduitGeometry.handles(slot));
+        result.addAll(pieces);
+        return List.copyOf(result);
+    }
     public VoxelShape shape(boolean hideFacades) {
         var result=shape;
         if(!hideFacades)for(var side:Direction.values())if(!facades[side.ordinal()].isEmpty())
@@ -276,10 +283,13 @@ public final class BundledCableEntity extends BlockEntity implements IInWorldGri
         for(var side:Direction.values())if(facades[side.ordinal()].getItem() instanceof appeng.api.implementations.items.IFacadeItem facade)
             panels.add(new RenderFacade(side,facade.getTextureBlockState(facades[side.ordinal()])));
         pieces=List.copyOf(all);shape=ConduitGeometry.shape(pieces);
-        snapshot=new RenderSnapshot(List.copyOf(visual),List.copyOf(panels),selected);
+        snapshot=new RenderSnapshot(List.copyOf(visual),List.copyOf(panels),selected,editing);
     }
     public void selectVisual(int slot) {
-        if(selected==slot)return;selected=slot;rebuildGeometry();requestModelDataUpdate();
+        selectVisual(slot,-1);
+    }
+    public void selectVisual(int slot,int editSlot) {
+        if(selected==slot&&editing==editSlot)return;selected=slot;editing=editSlot;rebuildGeometry();requestModelDataUpdate();
         if(level!=null)level.sendBlockUpdated(worldPosition,getBlockState(),getBlockState(),Block.UPDATE_CLIENTS);
     }
     @Override public ModelData getModelData() { return ModelData.builder().with(RENDER,snapshot).build(); }

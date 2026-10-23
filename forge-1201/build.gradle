@@ -1,6 +1,6 @@
 plugins { id 'net.minecraftforge.gradle' version '6.0.54' }
 group = 'com.syaru.mebundledcable'
-version = '0.1.0-alpha.4'
+version = '0.1.0-alpha.5'
 base { archivesName = 'me-bundled-cable-forge-1.20.1' }
 java { toolchain.languageVersion = JavaLanguageVersion.of(17); withSourcesJar() }
 repositories {

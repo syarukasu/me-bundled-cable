@@ -15,6 +15,15 @@ public final class ConduitGeometry {
         public Piece(int slot,Direction side,AABB box,boolean core) { this(slot,side,box,core,core?"core":"arm"); }
     }
     public record Hit(int slot, Direction side) { }
+    public static List<Piece> handles(int slot) {
+        var result=new ArrayList<Piece>();
+        for(var side:Direction.values()) {
+            var center=new Vec3(.5,.5,.5).add(offset(slot,side.getAxis()))
+                    .add(side.getStepX()*6.0/16,side.getStepY()*6.0/16,side.getStepZ()*6.0/16);
+            result.add(new Piece(slot,side,cube(center,1.0/16),false,"handle"));
+        }
+        return List.copyOf(result);
+    }
     private ConduitGeometry() { }
     public static Vec3 offset(int slot, Direction.Axis axis) {
         int x = OFFSETS[slot][0], y = OFFSETS[slot][1];

@@ -1,4 +1,7 @@
 {
+  "message.mebundledcable.incompatible":"Cannot connect these lanes. Check cable colors and access permissions.",
+  "message.mebundledcable.connection_changed":"Lane #%s: toggled %s connection",
+  "message.mebundledcable.selection_cleared":"Lane selection cleared",
   "block.mebundledcable.controller":"ME Bundled Controller",
   "message.mebundledcable.unlimited":"Unlimited",
   "message.mebundledcable.selected":"Selected lane #%s",

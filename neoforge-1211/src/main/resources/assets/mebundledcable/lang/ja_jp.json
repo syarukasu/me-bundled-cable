@@ -1,4 +1,7 @@
 {
+  "message.mebundledcable.incompatible":"この回線同士は接続できません。ケーブルの色と操作権限を確認してください。",
+  "message.mebundledcable.connection_changed":"回線 #%s：%sの接続を切り替えました",
+  "message.mebundledcable.selection_cleared":"回線の選択を解除しました",
   "block.mebundledcable.controller":"MEバンドルコントローラー",
   "message.mebundledcable.unlimited":"無制限",
   "message.mebundledcable.selected":"回線 #%s を選択",

@@ -13,8 +13,11 @@ Route up to eight AE2 cables through one block, with individually selectable lan
 - Glass, covered, smart, dense covered and dense smart cables can share a bundle.
 - Supports all AE2 cable colors, including multiple lanes with the same color.
 - Smart overlays show the channels actually used on each branch.
-- Select a lane with an AE2-compatible wrench, then click it again to toggle a connection.
-- Select one lane and click a lane in an adjacent bundle to pair them.
+- Right-click a connection arm with an AE2-compatible wrench to toggle it immediately.
+- Right-click a cable core to select it. Six directional handles appear; click a handle to toggle that face, even after its arm has disappeared.
+- Selected lanes are highlighted; other lanes fade while editing. Green handles indicate a live connection and amber handles indicate no live connection.
+- Select a core and click a lane in an adjacent bundle to pair them. Click the selected core again to cancel the selection.
+- Incompatible cable colors or denied access do not change the selected connection.
 - Sneak with a wrench to recover the targeted cable. Breaking the bundle recovers its contents.
 - AE2 facades and optional per-lane Jade information are supported.
 

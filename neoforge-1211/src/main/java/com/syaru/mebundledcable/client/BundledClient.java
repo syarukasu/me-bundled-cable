@@ -41,16 +41,17 @@ public final class BundledClient {
     public static final class Selection {
         private static BundledCableEntity previous;
         @SubscribeEvent public static void tick(ClientTickEvent.Post event) {
-            var mc=Minecraft.getInstance();BundledCableEntity current=null;int selected=-1;
+            var mc=Minecraft.getInstance();BundledCableEntity current=null;int selected=-1;int editing=-1;
             if(mc.level!=null&&mc.player!=null&&mc.screen==null
                     &&InteractionUtil.canWrenchDisassemble(mc.player.getMainHandItem())&&mc.hitResult instanceof BlockHitResult hit
                     &&mc.level.getBlockEntity(hit.getBlockPos()) instanceof BundledCableEntity cable) {
                 current=cable;
-                var target=ConduitGeometry.hit(cable.pieces(),mc.player.getEyePosition().subtract(Vec3.atLowerCornerOf(hit.getBlockPos())),hit.getLocation().subtract(Vec3.atLowerCornerOf(hit.getBlockPos())));
-                selected=target==null?-1:target.slot();
+                editing=mc.player.isShiftKeyDown()?-1:BundledCableBlock.selectedSlot(mc.player,cable);
+                var target=ConduitGeometry.hit(cable.interactionPieces(editing),mc.player.getEyePosition().subtract(Vec3.atLowerCornerOf(hit.getBlockPos())),hit.getLocation().subtract(Vec3.atLowerCornerOf(hit.getBlockPos())));
+                selected=editing>=0?editing:target==null?-1:target.slot();
             }
             if(previous!=null&&previous!=current&&!previous.isRemoved())previous.selectVisual(-1);
-            if(current!=null)current.selectVisual(selected);
+            if(current!=null)current.selectVisual(selected,editing);
             previous=current;
         }
     }
